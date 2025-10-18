@@ -10,7 +10,7 @@ pipeline {
         // ===== FRONTEND BUILD =====
         stage('Build Frontend') {
             steps {
-                dir('2300030527_frontend') {
+                dir('frontend-reactapp') {
                     bat 'npm install'
                     bat 'npm run build'
                 }
@@ -22,13 +22,13 @@ pipeline {
             steps {
                 bat '''
                 echo Deleting old frontend from Tomcat...
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_frontend" (
-                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_frontend"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\frontend-reactapp" (
+                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\frontend-reactapp"
                 )
                 echo Creating new frontend folder...
-                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_frontend"
+                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\frontend-reactapp"
                 echo Copying new build files...
-                xcopy /E /I /Y 2300030527_frontend\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\frontend-reactapp\\"
+                xcopy /E /I /Y frontend-reactapp\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\frontend-reactapp\\"
                 '''
             }
         }
@@ -36,7 +36,7 @@ pipeline {
         // ===== BACKEND BUILD =====
         stage('Build Backend') {
             steps {
-                dir('2300030527_backend') {
+                dir('backend-springbootapp') {
                     bat 'mvn clean package -DskipTests'
                 }
             }
@@ -47,14 +47,14 @@ pipeline {
             steps {
                 bat '''
                 echo Removing old backend WAR and folder...
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_backend" (
-                    del /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_backend.war"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\backend-springbootapp" (
+                    del /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\backend-springbootapp.war"
                 )
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_backend" (
-                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_backend"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\backend-springbootapp" (
+                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\backend-springbootapp"
                 )
                 echo Copying new backend WAR file...
-                copy "2300030527_backend\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\"
+                copy "backend-springbootapp\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\"
                 '''
             }
         }
