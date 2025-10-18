@@ -10,7 +10,7 @@ pipeline {
         // ===== FRONTEND BUILD =====
         stage('Build Frontend') {
             steps {
-                dir('frontend-reactapp') {
+                dir('2300030527_frontend') {
                     bat 'npm install'
                     bat 'npm run build'
                 }
@@ -28,7 +28,7 @@ pipeline {
                 echo Creating new frontend folder...
                 mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_frontend"
                 echo Copying new build files...
-                xcopy /E /I /Y frontend-reactapp\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\frontend-reactapp\\"
+                xcopy /E /I /Y 2300030527_frontend\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\frontend-reactapp\\"
                 '''
             }
         }
@@ -36,7 +36,7 @@ pipeline {
         // ===== BACKEND BUILD =====
         stage('Build Backend') {
             steps {
-                dir('backend-springbootapp') {
+                dir('2300030527_backend') {
                     bat 'mvn clean package -DskipTests'
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
                     rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\2300030527_backend"
                 )
                 echo Copying new backend WAR file...
-                copy "backend-springbootapp\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\"
+                copy "2300030527_backend\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\"
                 '''
             }
         }
